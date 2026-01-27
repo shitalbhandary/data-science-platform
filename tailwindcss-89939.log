@@ -1,0 +1,96 @@
+2026-01-26T01:07:55.517644Z  INFO tailwindcss_oxide::scanner: Provided sources:
+2026-01-26T01:07:55.517696Z  INFO tailwindcss_oxide::scanner: Source: PublicSourceEntry { base: "/Users/shitalbhandary/project/data-science-platform", pattern: "**/*", negated: false }
+2026-01-26T01:07:55.517735Z  INFO tailwindcss_oxide::scanner: Optimized sources:
+2026-01-26T01:07:55.517739Z  INFO tailwindcss_oxide::scanner: Source: Auto { base: "/Users/shitalbhandary/project/data-science-platform" }
+2026-01-26T01:07:55.518339Z  INFO scan_sources: tailwindcss_oxide::scanner: enter
+2026-01-26T01:07:55.518629Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/postcss.config.mjs"
+2026-01-26T01:07:55.518698Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/README.md"
+2026-01-26T01:07:55.518716Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/public"
+2026-01-26T01:07:55.518736Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/public/file.svg"
+2026-01-26T01:07:55.518752Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/public/datasets"
+2026-01-26T01:07:55.518775Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/public/datasets/iris.csv"
+2026-01-26T01:07:55.518783Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/public/datasets/students.csv"
+2026-01-26T01:07:55.518791Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/public/datasets/sales.csv"
+2026-01-26T01:07:55.518799Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/public/vercel.svg"
+2026-01-26T01:07:55.518807Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/public/next.svg"
+2026-01-26T01:07:55.518814Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/public/globe.svg"
+2026-01-26T01:07:55.518822Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/public/window.svg"
+2026-01-26T01:07:55.518838Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/package.json"
+2026-01-26T01:07:55.518848Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/tsconfig.json"
+2026-01-26T01:07:55.518875Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/eslint.config.mjs"
+2026-01-26T01:07:55.518882Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/next.config.ts"
+2026-01-26T01:07:55.518896Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/src"
+2026-01-26T01:07:55.518920Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/src/types"
+2026-01-26T01:07:55.518938Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/src/types/global.d.ts"
+2026-01-26T01:07:55.518953Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/src/app"
+2026-01-26T01:07:55.518969Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/src/app/layout.tsx"
+2026-01-26T01:07:55.518976Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/src/app/page.tsx"
+2026-01-26T01:07:55.518986Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/src/app/globals.css"
+2026-01-26T01:07:55.519010Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/src/components"
+2026-01-26T01:07:55.519027Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/src/components/Navbar.tsx"
+2026-01-26T01:07:55.519034Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/src/components/DatasetBrowser.tsx"
+2026-01-26T01:07:55.519041Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/src/components/REditor.tsx"
+2026-01-26T01:07:55.519048Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/src/components/CodeEditorContainer.tsx"
+2026-01-26T01:07:55.519054Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/src/components/CodeEditor.tsx"
+2026-01-26T01:07:55.519060Z  INFO scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/src/components/TutorialContainer.tsx"
+2026-01-26T01:07:55.519076Z  INFO scan_sources: tailwindcss_oxide::scanner: exit
+2026-01-26T01:07:55.519079Z  INFO extract_candidates: tailwindcss_oxide::scanner: enter
+2026-01-26T01:07:55.519082Z  INFO extract_candidates:read_all_files: tailwindcss_oxide::scanner: enter
+2026-01-26T01:07:55.519084Z  INFO extract_candidates:read_all_files: tailwindcss_oxide::scanner: Reading 23 file(s)
+2026-01-26T01:07:55.519201Z  INFO tailwindcss_oxide::scanner: Reading "/Users/shitalbhandary/project/data-science-platform/public/globe.svg"
+2026-01-26T01:07:55.519200Z  INFO tailwindcss_oxide::scanner: Reading "/Users/shitalbhandary/project/data-science-platform/tsconfig.json"
+2026-01-26T01:07:55.519239Z  INFO tailwindcss_oxide::scanner: Reading "/Users/shitalbhandary/project/data-science-platform/package.json"
+2026-01-26T01:07:55.519247Z  INFO tailwindcss_oxide::scanner: Reading "/Users/shitalbhandary/project/data-science-platform/public/datasets/iris.csv"
+2026-01-26T01:07:55.519260Z  INFO tailwindcss_oxide::scanner: Reading "/Users/shitalbhandary/project/data-science-platform/eslint.config.mjs"
+2026-01-26T01:07:55.519259Z  INFO tailwindcss_oxide::scanner: Reading "/Users/shitalbhandary/project/data-science-platform/postcss.config.mjs"
+2026-01-26T01:07:55.519267Z  INFO tailwindcss_oxide::scanner: Reading "/Users/shitalbhandary/project/data-science-platform/public/datasets/students.csv"
+2026-01-26T01:07:55.519259Z  INFO tailwindcss_oxide::scanner: Reading "/Users/shitalbhandary/project/data-science-platform/public/file.svg"
+2026-01-26T01:07:55.519308Z  INFO tailwindcss_oxide::scanner: Reading "/Users/shitalbhandary/project/data-science-platform/src/types/global.d.ts"
+2026-01-26T01:07:55.519315Z  INFO tailwindcss_oxide::scanner: Reading "/Users/shitalbhandary/project/data-science-platform/src/components/CodeEditorContainer.tsx"
+2026-01-26T01:07:55.519202Z  INFO tailwindcss_oxide::scanner: Reading "/Users/shitalbhandary/project/data-science-platform/public/datasets/sales.csv"
+2026-01-26T01:07:55.519274Z  INFO tailwindcss_oxide::scanner: Reading "/Users/shitalbhandary/project/data-science-platform/src/components/Navbar.tsx"
+2026-01-26T01:07:55.519282Z  INFO tailwindcss_oxide::scanner: Reading "/Users/shitalbhandary/project/data-science-platform/public/vercel.svg"
+2026-01-26T01:07:55.519360Z  INFO tailwindcss_oxide::scanner: Reading "/Users/shitalbhandary/project/data-science-platform/src/components/REditor.tsx"
+2026-01-26T01:07:55.519362Z  INFO tailwindcss_oxide::scanner: Reading "/Users/shitalbhandary/project/data-science-platform/src/app/page.tsx"
+2026-01-26T01:07:55.519285Z  INFO tailwindcss_oxide::scanner: Reading "/Users/shitalbhandary/project/data-science-platform/README.md"
+2026-01-26T01:07:55.519268Z  INFO tailwindcss_oxide::scanner: Reading "/Users/shitalbhandary/project/data-science-platform/public/window.svg"
+2026-01-26T01:07:55.519324Z  INFO tailwindcss_oxide::scanner: Reading "/Users/shitalbhandary/project/data-science-platform/src/app/layout.tsx"
+2026-01-26T01:07:55.519327Z  INFO tailwindcss_oxide::scanner: Reading "/Users/shitalbhandary/project/data-science-platform/src/components/DatasetBrowser.tsx"
+2026-01-26T01:07:55.519336Z  INFO tailwindcss_oxide::scanner: Reading "/Users/shitalbhandary/project/data-science-platform/src/components/CodeEditor.tsx"
+2026-01-26T01:07:55.519283Z  INFO tailwindcss_oxide::scanner: Reading "/Users/shitalbhandary/project/data-science-platform/next.config.ts"
+2026-01-26T01:07:55.519370Z  INFO tailwindcss_oxide::scanner: Reading "/Users/shitalbhandary/project/data-science-platform/src/components/TutorialContainer.tsx"
+2026-01-26T01:07:55.519266Z  INFO tailwindcss_oxide::scanner: Reading "/Users/shitalbhandary/project/data-science-platform/public/next.svg"
+2026-01-26T01:07:55.519468Z  INFO extract_candidates:read_all_files: tailwindcss_oxide::scanner: exit
+2026-01-26T01:07:55.519471Z  INFO extract_candidates:parse_all_blobs: tailwindcss_oxide::scanner: enter
+2026-01-26T01:07:55.519472Z  INFO extract_candidates:parse_all_blobs:extract: tailwindcss_oxide::scanner: enter
+2026-01-26T01:07:55.520072Z  INFO extract_candidates:parse_all_blobs:extract: tailwindcss_oxide::scanner: exit
+2026-01-26T01:07:55.520078Z  INFO extract_candidates:parse_all_blobs: tailwindcss_oxide::scanner: exit
+2026-01-26T01:07:55.520081Z  INFO extract_candidates:read_all_files: tailwindcss_oxide::scanner: enter
+2026-01-26T01:07:55.520083Z  INFO extract_candidates:read_all_files: tailwindcss_oxide::scanner: Reading 1 file(s)
+2026-01-26T01:07:55.520097Z  INFO extract_candidates:read_all_files: tailwindcss_oxide::scanner: Reading "/Users/shitalbhandary/project/data-science-platform/src/app/globals.css"
+2026-01-26T01:07:55.520100Z  INFO extract_candidates:read_all_files: tailwindcss_oxide::scanner: exit
+2026-01-26T01:07:55.520103Z  INFO extract_candidates:extract_css_variables: tailwindcss_oxide::scanner: enter
+2026-01-26T01:07:55.520104Z  INFO extract_candidates:extract_css_variables:extract: tailwindcss_oxide::scanner: enter
+2026-01-26T01:07:55.520175Z  INFO extract_candidates:extract_css_variables:extract: tailwindcss_oxide::scanner: exit
+2026-01-26T01:07:55.520178Z  INFO extract_candidates:extract_css_variables: tailwindcss_oxide::scanner: exit
+2026-01-26T01:07:55.520353Z  INFO extract_candidates: tailwindcss_oxide::scanner: exit
+2026-01-26T01:07:55.520495Z  INFO get_files: tailwindcss_oxide::scanner: enter
+2026-01-26T01:07:55.520500Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: enter
+2026-01-26T01:07:55.520709Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/public"
+2026-01-26T01:07:55.520733Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/public/datasets"
+2026-01-26T01:07:55.520798Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/src"
+2026-01-26T01:07:55.520816Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/src/types"
+2026-01-26T01:07:55.520836Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/src/app"
+2026-01-26T01:07:55.520862Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/src/components"
+2026-01-26T01:07:55.520894Z  INFO get_files:scan_sources: tailwindcss_oxide::scanner: exit
+2026-01-26T01:07:55.520957Z  INFO get_files: tailwindcss_oxide::scanner: exit
+2026-01-26T01:07:55.520990Z  INFO get_globs: tailwindcss_oxide::scanner: enter
+2026-01-26T01:07:55.520993Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: enter
+2026-01-26T01:07:55.521222Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/public"
+2026-01-26T01:07:55.521251Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/public/datasets"
+2026-01-26T01:07:55.521321Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/src"
+2026-01-26T01:07:55.521340Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/src/types"
+2026-01-26T01:07:55.521361Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/src/app"
+2026-01-26T01:07:55.521388Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: Discovering "/Users/shitalbhandary/project/data-science-platform/src/components"
+2026-01-26T01:07:55.521422Z  INFO get_globs:scan_sources: tailwindcss_oxide::scanner: exit
+2026-01-26T01:07:55.522141Z  INFO get_globs: tailwindcss_oxide::scanner: exit

@@ -1,0 +1,65 @@
+
+> data-science-platform@0.1.0 dev
+> next dev
+
+▲ Next.js 16.1.4 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.1.2:3000
+
+✓ Starting...
+✓ Ready in 324ms
+ GET / 200 in 213ms (compile: 132ms, render: 81ms)
+ GET / 200 in 32ms (compile: 5ms, render: 27ms)
+ GET / 200 in 41ms (compile: 8ms, render: 34ms)
+ GET / 200 in 43ms (compile: 9ms, render: 34ms)
+✓ Compiled in 190ms
+✓ Compiled in 20ms
+✓ Compiled in 12ms
+✓ Compiled in 16ms
+✓ Compiled in 20ms
+✓ Compiled in 11ms
+✓ Compiled in 20ms
+ GET / 200 in 55ms (compile: 42ms, render: 13ms)
+✓ Compiled in 10ms
+✓ Compiled in 15ms
+✓ Compiled in 10ms
+✓ Compiled in 9ms
+✓ Compiled in 14ms
+✓ Compiled in 12ms
+✓ Compiled in 8ms
+ GET / 200 in 127ms (compile: 59ms, render: 68ms)
+ GET / 200 in 42ms (compile: 12ms, render: 30ms)
+ GET / 200 in 43ms (compile: 9ms, render: 34ms)
+✓ Compiled in 12ms
+✓ Compiled in 9ms
+✓ Compiled in 14ms
+✓ Compiled in 29ms
+ GET / 200 in 135ms (compile: 60ms, render: 75ms)
+✓ Compiled in 15ms
+ GET / 200 in 119ms (compile: 55ms, render: 64ms)
+✓ Compiled in 14ms
+✓ Compiled in 9ms
+✓ Compiled in 17ms
+ GET / 200 in 113ms (compile: 50ms, render: 63ms)
+✓ Compiled in 11ms
+✓ Compiled in 22ms
+✓ Compiled in 11ms
+✓ Compiled in 19ms
+ GET / 200 in 148ms (compile: 67ms, render: 81ms)
+✓ Compiled in 11ms
+✓ Compiled in 11ms
+✓ Compiled in 12ms
+✓ Compiled in 13ms
+ GET / 200 in 129ms (compile: 59ms, render: 70ms)
+ GET / 200 in 77ms (compile: 61ms, render: 16ms)
+ GET / 200 in 75ms (compile: 4ms, render: 71ms)
+✓ Compiled in 14ms
+ GET / 200 in 73ms (compile: 62ms, render: 11ms)
+✓ Compiled in 9ms
+✓ Compiled in 12ms
+ GET / 200 in 136ms (compile: 61ms, render: 75ms)
+ GET / 200 in 42ms (compile: 12ms, render: 31ms)
+✓ Compiled in 69ms
+✓ Compiled in 18ms
+✓ Compiled in 18ms
+[?25h

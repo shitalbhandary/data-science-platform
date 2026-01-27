@@ -1,0 +1,16 @@
+student_id,name,age,grade,math_score,reading_score,writing_score,school
+1,Alice Johnson,16,10,92,88,95,North High
+2,Bob Smith,17,11,78,82,76,West High
+3,Charlie Brown,15,9,65,71,68,North High
+4,Diana Prince,16,10,88,92,85,East High
+5,Eve Wilson,17,11,95,89,94,South High
+6,Frank Miller,16,10,72,68,75,West High
+7,Grace Lee,15,9,83,87,80,North High
+8,Henry Davis,16,10,79,85,77,East High
+9,Isabella Garcia,17,11,91,93,89,South High
+10,Jack Brown,15,9,58,62,55,West High
+11,Kate Johnson,16,10,87,83,90,North High
+12,Luke Smith,17,11,73,69,76,East High
+13,Mia Wilson,16,10,94,96,92,South High
+14,Noah Davis,15,9,68,72,65,West High
+15,Olivia Lee,16,10,81,79,84,North High

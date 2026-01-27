@@ -1,0 +1,214 @@
+"use client"
+
+import { useState, useEffect, useCallback } from 'react'
+import CodeMirror from '@uiw/react-codemirror'
+import { python } from '@codemirror/lang-python'
+import { oneDark } from '@codemirror/theme-one-dark'
+
+export default function CodeEditor() {
+  const [code, setCode] = useState('# Welcome to Python Data Science!\n# Click "Run Code" to execute\n\nprint("Hello, Data Science!")\n\n# Try some basic operations\nimport numpy as np\nimport pandas as pd\n\n# Create a simple dataset\ndata = {\n    "name": ["Alice", "Bob", "Charlie"],\n    "age": [25, 30, 35],\n    "score": [85, 92, 78]\n}\n\ndf = pd.DataFrame(data)\nprint("Dataset:")\nprint(df)\n\n# Basic statistics\nprint("\\nBasic Statistics:")\nprint(df.describe())')
+  const [output, setOutput] = useState('')
+  const [isRunning, setIsRunning] = useState(false)
+  const [pyodide, setPyodide] = useState<any>(null)
+
+  useEffect(() => {
+    const initPyodide = async () => {
+      try {
+        const pyodideScript = document.createElement('script')
+        pyodideScript.src = 'https://cdn.jsdelivr.net/pyodide/v0.29.2/full/pyodide.js'
+        pyodideScript.onload = async () => {
+          // @ts-ignore
+          const pyodideInstance = await window.loadPyodide()
+          await pyodideInstance.loadPackage(['numpy', 'pandas', 'matplotlib'])
+          setPyodide(pyodideInstance)
+          setOutput('Python environment ready! 🚀\n\nTry running the code above or write your own!')
+        }
+        document.head.appendChild(pyodideScript)
+      } catch (error) {
+        setOutput('Error loading Python environment. Please refresh the page.')
+        console.error('Pyodide initialization error:', error)
+      }
+    }
+
+    initPyodide()
+  }, [])
+
+  const loadDataset = async (datasetName: string) => {
+    if (!pyodide) return
+    
+    try {
+      const response = await fetch(`/datasets/${datasetName}.csv`)
+      const csvData = await response.text()
+      
+      // Build Python code string properly
+      const pythonCode = `import pandas as pd
+from io import StringIO
+
+# Load CSV data
+csv_data = """${csvData}"""
+df = pd.read_csv(StringIO(csv_data))
+
+# Store in global namespace for user to access
+globals()['${datasetName}_data'] = df
+print(f"Dataset '{datasetName}' loaded successfully!")
+print(f"Shape: {df.shape}")
+print(f"Columns: {list(df.columns)}")
+print("\\nFirst 5 rows:")
+print(df.head())
+      `
+
+      // Execute Python code
+      pyodide.runPython(code)
+
+      // Capture output
+      const output = pyodide.runPython(`
+output = sys.stdout.getvalue()
+sys.stdout = sys.__stdout__
+output
+      `)
+
+      setOutput(output || 'Code executed successfully (no output)')
+      
+      // Add code to user's editor
+      setCode((prevCode) => prevCode + `\n\n# Dataset '${datasetName}' is now available as ${datasetName}_data\nprint(${datasetName}_data.describe())\n`)
+      
+    } catch (error: any) {
+      console.error('Dataset loading error:', error)
+      setOutput(`Error loading dataset: ${error.message || error.toString()}\n\nDebug info:\n- Dataset: ${datasetName}\n- CSV length: ${csvData.length} chars\n- First 100 chars: ${csvData.substring(0, 100)}...`)
+    } finally {
+      setIsRunning(false)
+    }
+  }
+  }
+  }
+  }
+
+  const clearEnvironment = useCallback(() => {
+    if (pyodide) {
+      setOutput('Python environment cleared! 🔄\n\nYou can now start fresh with your code.')
+      pyodide.runPython(`
+import sys
+import pandas as pd
+import numpy as np
+# Clear all user-defined variables
+current_globals = [name for name in globals() if not name.startswith('_')]
+for var_name in current_globals:
+    del globals()[var_name]
+print("Environment cleared. Ready for fresh start!")
+      `)
+    }
+  }, [pyodide])
+
+  const runCode = useCallback(async () => {
+    if (!pyodide) {
+      setOutput('Python environment is still loading... Please wait.')
+      return
+    }
+
+    setIsRunning(true)
+    setOutput('Running code...')
+
+    try {
+      // Redirect Python stdout to capture output
+      pyodide.runPython(`
+import sys
+from io import StringIO
+sys.stdout = StringIO()
+      `)
+
+      try {
+        // Run user code
+        pyodide.runPython(code)
+
+        // Capture output
+        const output = pyodide.runPython(`
+output = sys.stdout.getvalue()
+sys.stdout = sys.__stdout__
+output
+        `)
+
+        setOutput(output || 'Code executed successfully (no output)')
+      } catch (error: any) {
+        console.error('Code execution error:', error)
+        setOutput(`Error: ${error.message || error.toString()}`)
+      }
+    } catch (error: any) {
+      setOutput(`Error: ${error.message}`)
+      console.error('Code execution error:', error)
+    } finally {
+      setIsRunning(false)
+    }
+  }, [code, pyodide])
+
+  return (
+    <div className="flex flex-col h-full">
+      <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-white">
+        <h3 className="text-lg font-semibold text-gray-800">Python Editor</h3>
+        <div className="flex gap-2">
+          <div className="flex gap-2 mr-4">
+            <button
+              onClick={() => loadDataset('iris')}
+              disabled={!pyodide}
+              className="px-3 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+            >
+              Load Iris
+            </button>
+            <button
+              onClick={() => loadDataset('sales')}
+              disabled={!pyodide}
+              className="px-3 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+            >
+              Load Sales
+            </button>
+            <button
+              onClick={() => loadDataset('students')}
+              disabled={!pyodide}
+              className="px-3 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+            >
+              Load Students
+            </button>
+          </div>
+        <button
+          onClick={clearEnvironment}
+          disabled={!pyodide}
+          className="px-3 py-2 bg-gray-500 text-white text-sm rounded-lg hover:bg-gray-600 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors mr-2"
+        >
+          Clear
+        </button>
+        <button
+          onClick={runCode}
+          disabled={isRunning || !pyodide}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+        >
+          {isRunning ? 'Running...' : 'Run Code'}
+        </button>
+        </div>
+      </div>
+      
+      <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-4 p-4">
+        {/* Code Editor */}
+        <div className="flex flex-col">
+          <h4 className="text-sm font-medium text-gray-700 mb-2">Code</h4>
+          <div className="flex-1 border border-gray-300 rounded-lg overflow-hidden">
+            <CodeMirror
+              value={code}
+              height="100%"
+              theme={oneDark}
+              extensions={[python()]}
+              onChange={(value) => setCode(value)}
+              className="h-full"
+            />
+          </div>
+        </div>
+        
+        {/* Output Panel */}
+        <div className="flex flex-col">
+          <h4 className="text-sm font-medium text-gray-700 mb-2">Output</h4>
+          <div className="flex-1 bg-gray-900 text-green-400 p-4 font-mono text-sm rounded-lg overflow-auto">
+            <pre className="whitespace-pre-wrap">{output}</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}

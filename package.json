@@ -11,7 +11,15 @@
   "dependencies": {
     "next": "16.1.4",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "@uiw/react-codemirror": "^4.23.9",
+    "@codemirror/lang-python": "^6.1.6",
+    "@codemirror/theme-one-dark": "^6.1.2",
+    "codemirror": "^6.0.1",
+    "@codemirror/view": "^6.34.1",
+    "@codemirror/state": "^6.4.1",
+    "pyodide": "^0.29.2",
+    "webr": "^0.5.8"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
