@@ -1,6 +1,6 @@
 declare global {
   interface Window {
-    loadPyodide: () => Promise<any>
+    loadPyodide: (config?: any) => Promise<any>
   }
 }
 

@@ -1,0 +1,16 @@
+
+> data-science-platform@0.1.0 dev
+> next dev
+
+▲ Next.js 16.1.4 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.1.12:3000
+
+✓ Starting...
+✓ Ready in 247ms
+ GET / 200 in 189ms (compile: 98ms, render: 91ms)
+ GET / 200 in 37ms (compile: 12ms, render: 26ms)
+ GET / 200 in 33ms (compile: 7ms, render: 26ms)
+ GET / 200 in 38ms (compile: 10ms, render: 29ms)
+ GET / 200 in 41ms (compile: 7ms, render: 34ms)
+[?25h

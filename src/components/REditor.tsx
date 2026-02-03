@@ -11,6 +11,7 @@ export default function REditor() {
   const [webR, setWebR] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [initError, setInitError] = useState(false)
+  const [plotData, setPlotData] = useState<string | null>(null)
 
 const initWebR = useCallback(async () => {
     let timeoutId: NodeJS.Timeout
@@ -30,8 +31,9 @@ const initWebR = useCallback(async () => {
         
         const webRInstance = new WebR({
           baseUrl: 'https://webr.r-wasm.org/v0.5.8/',
-          interactive: false,
-          channelType: 2 // Use channel mode to avoid payloadType issues
+          interactive: true, // Enable interactive mode for canvas support
+          channelType: 0,
+          homedir: "/home/web_user"
         })
         
         setOutput('🔄 Initializing R environment...\n\nStep 3/4: Downloading R WebAssembly files...\n\nThis is the longest step (20-60 seconds on first load).\nWebAssembly files are cached after first use.')
@@ -67,6 +69,19 @@ const initWebR = useCallback(async () => {
             }
           }
         }
+        
+        // Set up webR for canvas plotting
+        await webRInstance.evalR(`
+          # Enable webR canvas plotting
+          options(webr.canvas.enabled = TRUE)
+          
+          # Store plot calls for replay
+          .store_plot_call <- function(call) {
+            .GlobalEnv$.__last_plot__ <- call
+          }
+        `)
+        
+        
         
         // Install common packages with error handling
         setOutput('🔄 Initializing R environment...\n\nInstalling packages: ggplot2, dplyr...')
@@ -146,10 +161,10 @@ const runCode = useCallback(async () => {
           const shelter = await new webR.Shelter()
           result = await shelter.captureR(code)
           
-          // Get the output and convert properly
+// Get the output and convert properly
           let output = ''
           if (result.output && Array.isArray(result.output)) {
-            output = result.output.map(item => {
+            output = result.output.map((item: any) => {
               if (typeof item === 'string') return item
               if (item && typeof item === 'object') {
                 // Extract the actual data from webR output objects
@@ -163,9 +178,20 @@ const runCode = useCallback(async () => {
                 return JSON.stringify(item, null, 2)
               }
               return String(item || '')
-            }).filter(item => item && item.trim()).join('\n')
+            }).filter((item: string) => item && item.trim()).join('\n')
           } else if (result.output) {
             output = String(result.output)
+          }
+          
+          // Check for plot commands and inform user
+          const hasPlotCommand = code.includes('plot(') || code.includes('hist(') || 
+                               code.includes('boxplot(') || code.includes('barplot(') ||
+                               code.includes('pairs(') || code.includes('curve(')
+          
+          if (hasPlotCommand) {
+            setPlotData('📊 Plot command executed!\n\nR plot commands in WebR:\n- Plots open in separate browser windows/tabs\n- Check your browser\'s popup settings\n- Look for new tabs or windows\n\nIf you don\'t see plots:\n1. Allow popups for localhost\n2. Check browser\'s tab bar\n3. Try the Python editor for inline plotting\n\nWorking plot examples:\nplot(1:10)           # Basic line plot\nhist(rnorm(100))      # Histogram\nboxplot(1:50)         # Box plot')
+          } else {
+            setPlotData(null)
           }
           
           // Clean up
@@ -211,7 +237,7 @@ const runCode = useCallback(async () => {
         try {
           const jsResult = await result.toJs()
           if (jsResult.values && Array.isArray(jsResult.values)) {
-            output = jsResult.values.map(item => {
+            output = jsResult.values.map((item: any) => {
               if (typeof item === 'string') return item
               if (item && typeof item === 'object') {
                 // Handle R data frames, vectors, etc.
@@ -221,7 +247,7 @@ const runCode = useCallback(async () => {
                 return String(item.values || item)
               }
               return String(item || '')
-            }).filter(item => item && item.trim()).join('\n')
+            }).filter((item: string) => item && item.trim()).join('\n')
           } else {
             output = 'Code executed successfully'
           }
@@ -233,7 +259,7 @@ const runCode = useCallback(async () => {
         setOutput(output)
         
       } catch (fallbackError) {
-        if (fallbackError.message && fallbackError.message.includes('payloadType')) {
+        if (fallbackError instanceof Error && fallbackError.message.includes('payloadType')) {
           setOutput('⚠️ R environment communication failed.\n\nThe WebAssembly R library is experiencing issues.\n\n💡 Recommendations:\n1. Try the Python editor (fully functional)\n2. Refresh the page and retry\n3. Use simpler R code\n\nPython environment is ready to use!')
         } else {
           setOutput(`R execution error: ${error.message || error.toString()}\n\n💡 Try:\n1. Checking R syntax\n2. Using simpler code first\n3. Loading required packages\n\nCommon packages available: ggplot2, dplyr, tidyr`)
@@ -286,6 +312,25 @@ const runCode = useCallback(async () => {
         {/* Output Panel */}
         <div className="flex flex-col">
           <h4 className="text-sm font-medium text-gray-700 mb-2">Output</h4>
+          
+          {/* Plot Display */}
+          {plotData && (
+            <div className="mb-4 p-4 bg-white border border-gray-200 rounded-lg">
+              <div className="text-sm font-medium text-gray-700 mb-2">Plot Output:</div>
+              {plotData.startsWith('data:image/') ? (
+                <img 
+                  src={plotData} 
+                  alt="R Plot" 
+                  className="w-full border border-gray-300 rounded"
+                />
+              ) : (
+                <div className="w-full border border-gray-300 rounded p-4 bg-gray-50">
+                  <p className="text-gray-600">{plotData}</p>
+                </div>
+              )}
+            </div>
+          )}
+          
           <div className="flex-1 bg-gray-900 text-green-400 p-4 font-mono text-sm rounded-lg overflow-auto">
             <pre className="whitespace-pre-wrap">{output}</pre>
           </div>

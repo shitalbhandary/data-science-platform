@@ -1,6 +1,6 @@
-"use client"
+'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import CodeMirror from '@uiw/react-codemirror'
 import { python } from '@codemirror/lang-python'
 import { oneDark } from '@codemirror/theme-one-dark'
@@ -10,89 +10,87 @@ export default function CodeEditor() {
   const [output, setOutput] = useState('')
   const [isRunning, setIsRunning] = useState(false)
   const [pyodide, setPyodide] = useState<any>(null)
+  const pyodideRef = useRef<any>(null)
   const [loadedDatasets, setLoadedDatasets] = useState<string[]>([])
   const [isPythonLoading, setIsPythonLoading] = useState(false)
   const [pythonInitError, setPythonInitError] = useState(false)
 
-  useEffect(() => {
-    let timeoutId: NodeJS.Timeout
+  const initPyodide = useCallback(async () => {
+    let timeoutId: NodeJS.Timeout | undefined
     
-    const initPyodide = async () => {
-      try {
-        setIsPythonLoading(true)
-        setPythonInitError(false)
-        setOutput('🐍 Initializing Python environment...\n\nStep 1/3: Loading Pyodide script...')
-        
-        const pyodideScript = document.createElement('script')
-        pyodideScript.src = 'https://cdn.jsdelivr.net/pyodide/v0.29.2/full/pyodide.js'
-        
-        pyodideScript.onload = async () => {
-          try {
-            setOutput('🐍 Initializing Python environment...\n\nStep 2/3: Starting Pyodide instance...')
-            
-            // @ts-ignore
-            const pyodideInstance = await window.loadPyodide({
-              indexURL: "https://cdn.jsdelivr.net/pyodide/v0.29.2/full/"
-            })
-            
-            setOutput('🐍 Initializing Python environment...\n\nStep 3/3: Installing packages (numpy, pandas, matplotlib)...')
-            
-            await pyodideInstance.loadPackage(['numpy', 'pandas', 'matplotlib'])
-            
-            clearTimeout(timeoutId)
-            setPyodide(pyodideInstance)
-            setOutput('✅ Python environment ready! 🚀\n\nYou can now run Python code above!\n\nTry the examples or write your own code.')
-            
-          } catch (initError) {
-            clearTimeout(timeoutId)
-            setPythonInitError(true)
-            console.error('Pyodide instance error:', initError)
-            setOutput('❌ Python environment failed to initialize.\n\nThis might be due to:\n- Network connectivity issues\n- CDN server problems\n- Browser compatibility\n\n💡 Solutions:\n1. Click "Retry" button below\n2. Refresh the page\n3. Check your internet connection\n4. Try a different browser\n\nError details: ' + (initError.message || initError.toString()))
-          }
-        }
-        
-        pyodideScript.onerror = (error) => {
-          clearTimeout(timeoutId)
+    try {
+      setIsPythonLoading(true)
+      setPythonInitError(false)
+      setOutput('🐍 Initializing Python environment...\n\nStep 1/3: Loading Pyodide script...')
+      
+      const pyodideScript = document.createElement('script')
+      pyodideScript.src = 'https://cdn.jsdelivr.net/pyodide/v0.29.2/full/pyodide.js'
+      
+      pyodideScript.onload = async () => {
+        try {
+          setOutput('🐍 Initializing Python environment...\n\nStep 2/3: Starting Pyodide instance...')
+          
+          // @ts-ignore
+          const pyodideInstance = await window.loadPyodide({
+            indexURL: "https://cdn.jsdelivr.net/pyodide/v0.29.2/full/"
+          })
+          
+          setOutput('🐍 Initializing Python environment...\n\nStep 3/3: Installing packages (numpy, pandas, matplotlib)...')
+          
+          await pyodideInstance.loadPackage(['numpy', 'pandas', 'matplotlib'])
+          
+          if (timeoutId) clearTimeout(timeoutId)
+          setPyodide(pyodideInstance)
+          pyodideRef.current = pyodideInstance
+          setOutput('✅ Python environment ready! 🚀\n\nYou can now run Python code above!\n\nTry the examples or write your own code.')
+          
+        } catch (initError) {
+          if (timeoutId) clearTimeout(timeoutId)
           setPythonInitError(true)
-          console.error('Pyodide script loading error:', error)
-          setOutput('❌ Failed to load Pyodide script.\n\nThe Python environment could not be loaded.\n\nThis might be due to:\n- Network connectivity issues\n- CDN server problems\n- Ad blockers or firewall\n\n💡 Solutions:\n1. Click "Retry" button below\n2. Refresh the page\n3. Check your internet connection')
+          console.error('Pyodide instance error:', initError)
+          setOutput('❌ Python environment failed to initialize.\n\nThis might be due to:\n- Network connectivity issues\n- CDN server problems\n- Browser compatibility\n\n💡 Solutions:\n1. Click "Retry" button below\n2. Refresh the page\n3. Check your internet connection\n4. Try a different browser\n\nError details: ' + (initError instanceof Error ? initError.message : String(initError)))
         }
-        
-        // Add timeout for script loading
-        timeoutId = setTimeout(() => {
-          if (!pyodide) {
-            setOutput('⏱️ Python environment is taking longer than expected...\n\nThis usually happens on:\n- Slow internet connections\n- First-time visits (caching files)\n\n💡 Options:\n1. Wait a bit more (it often finishes)\n2. Click "Retry" button below\n3. Refresh the page\n4. Check your internet connection')
-          }
-        }, 20000) // 20 second timeout
-        
-        document.head.appendChild(pyodideScript)
-        
-      } catch (error) {
-        clearTimeout(timeoutId)
-        setPythonInitError(true)
-        console.error('Pyodide initialization error:', error)
-        setOutput('❌ Error loading Python environment.\n\nPlease refresh the page and try again.\n\nTechnical details: ' + (error.message || error.toString()))
-      } finally {
-        setIsPythonLoading(false)
       }
-    }
-
-    initPyodide()
-    
-    return () => {
+      
+      pyodideScript.onerror = (error: string | Event) => {
+        if (timeoutId) clearTimeout(timeoutId)
+        setPythonInitError(true)
+        console.error('Pyodide script loading error:', error)
+        setOutput('❌ Failed to load Pyodide script.\n\nThe Python environment could not be loaded.\n\nThis might be due to:\n- Network connectivity issues\n- CDN server problems\n- Ad blockers or firewall\n\n💡 Solutions:\n1. Click "Retry" button below\n2. Refresh the page\n3. Check your internet connection')
+      }
+      
+      // Add timeout for script loading
+      timeoutId = setTimeout(() => {
+        if (!pyodideRef.current) {
+          setOutput('⏱️ Python environment is taking longer than expected...\n\nThis usually happens on:\n- Slow internet connections\n- First-time visits (caching files)\n\n💡 Options:\n1. Wait a bit more (it often finishes)\n2. Click "Retry" button below\n3. Refresh the page\n4. Check your internet connection')
+        }
+      }, 20000) // 20 second timeout
+      
+      document.head.appendChild(pyodideScript)
+      
+    } catch (error) {
       if (timeoutId) clearTimeout(timeoutId)
+      setPythonInitError(true)
+      console.error('Pyodide initialization error:', error)
+      setOutput('❌ Error loading Python environment.\n\nPlease refresh the page and try again.\n\nTechnical details: ' + (error instanceof Error ? error.message : String(error)))
+    } finally {
+      setIsPythonLoading(false)
     }
   }, [])
 
-  const loadDataset = async (datasetName: string) => {
-    if (!pyodide) return
+  useEffect(() => {
+    initPyodide()
+  }, [])
+
+  const loadDataset = useCallback(async (datasetName: string) => {
+    if (!pyodideRef.current) return
     
     let csvData = ''
     try {
       const response = await fetch(`/datasets/${datasetName}.csv`)
       csvData = await response.text()
       
-// Build Python code string properly
+      // Build Python code string properly
       const pythonCode = `import pandas as pd
 from io import StringIO
 
@@ -112,17 +110,17 @@ print(df.head())
       `
 
       // Redirect Python stdout to capture output
-      pyodide.runPython(`
+      pyodideRef.current.runPython(`
 import sys
 from io import StringIO
 sys.stdout = StringIO()
       `)
 
       // Execute Python code
-      pyodide.runPython(pythonCode)
+      pyodideRef.current.runPython(pythonCode)
 
       // Capture output
-      const output = pyodide.runPython(`
+      const output = pyodideRef.current.runPython(`
 output = sys.stdout.getvalue()
 sys.stdout = sys.__stdout__
 output
@@ -132,22 +130,16 @@ output
       
       // Add to loaded datasets
       setLoadedDatasets(prev => [...prev, datasetName])
-      
-      // Add code to user's editor
-      setCode((prevCode) => prevCode + `\n\n# Dataset '${datasetName}' is now available as ${datasetName}_data\nprint(${datasetName}_data.describe())\n`)
-      
     } catch (error: any) {
       console.error('Dataset loading error:', error)
-      setOutput(`Error loading dataset: ${error.message || error.toString()}\n\nDebug info:\n- Dataset: ${datasetName}\n- CSV length: ${csvData.length} chars\n- First 100 chars: ${csvData.substring(0, 100)}...`)
-    } finally {
-      setIsRunning(false)
+      setOutput(`Error loading dataset: ${error.message}`)
     }
-  }
+  }, [])
 
   const clearEnvironment = useCallback(() => {
-    if (pyodide) {
+    if (pyodideRef.current) {
       setOutput('Python environment cleared! 🔄\n\nYou can now start fresh with your code.')
-      pyodide.runPython(`
+      pyodideRef.current.runPython(`
 import sys
 import pandas as pd
 import numpy as np
@@ -158,10 +150,10 @@ for var_name in current_globals:
 print("Environment cleared. Ready for fresh start!")
       `)
     }
-  }, [pyodide])
+  }, [])
 
   const runCode = useCallback(async () => {
-    if (!pyodide) {
+    if (!pyodideRef.current) {
       setOutput('Python environment is still loading... Please wait.')
       return
     }
@@ -171,7 +163,7 @@ print("Environment cleared. Ready for fresh start!")
 
     try {
       // Redirect Python stdout to capture output
-      pyodide.runPython(`
+      pyodideRef.current.runPython(`
 import sys
 from io import StringIO
 sys.stdout = StringIO()
@@ -179,7 +171,7 @@ sys.stdout = StringIO()
 
       try {
         // Restore any loaded datasets from stored CSV data
-        pyodide.runPython(`
+        pyodideRef.current.runPython(`
 import pandas as pd
 from io import StringIO
 # Restore datasets from stored CSV data
@@ -192,14 +184,14 @@ for name in list(globals().keys()):
         `)
 
         // Check if user is trying to access dataset data that doesn't exist
-        if (code.includes('_data') && !pyodide.runPython(`[name for name in globals() if name.endswith('_data')]`).length) {
+        if (code.includes('_data') && !pyodideRef.current.runPython(`[name for name in globals() if name.endswith('_data')]`).length) {
           setOutput('Error: Dataset not found. Please load a dataset first using the buttons above (Load Iris, Load Sales, or Load Students).')
         } else {
           // Run user code
-          pyodide.runPython(code)
+          pyodideRef.current.runPython(code)
 
           // Capture output
-          const output = pyodide.runPython(`
+          const output = pyodideRef.current.runPython(`
 output = sys.stdout.getvalue()
 sys.stdout = sys.__stdout__
 output
@@ -221,40 +213,33 @@ output
     } finally {
       setIsRunning(false)
     }
-  }, [code, pyodide])
+  }, [code])
 
   return (
     <div className="flex flex-col h-full">
       <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-white">
         <h3 className="text-lg font-semibold text-gray-800">Python Editor</h3>
+        
         <div className="flex gap-2">
-          {pythonInitError && (
-            <button
-              onClick={initPyodide}
-              disabled={isPythonLoading}
-              className="px-3 py-2 bg-orange-600 text-white text-sm rounded-lg hover:bg-orange-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
-            >
-              {isPythonLoading ? 'Retrying...' : 'Retry'}
-            </button>
-          )}
+          {/* Dataset Loading Buttons */}
           <div className="flex gap-2 mr-4">
             <button
               onClick={() => loadDataset('iris')}
-              disabled={!pyodide}
+              disabled={!pyodideRef.current}
               className="px-3 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
             >
               Load Iris
             </button>
             <button
               onClick={() => loadDataset('sales')}
-              disabled={!pyodide}
+              disabled={!pyodideRef.current}
               className="px-3 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
             >
               Load Sales
             </button>
             <button
               onClick={() => loadDataset('students')}
-              disabled={!pyodide}
+              disabled={!pyodideRef.current}
               className="px-3 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
             >
               Load Students
@@ -262,14 +247,14 @@ output
           </div>
         <button
           onClick={clearEnvironment}
-          disabled={!pyodide || isPythonLoading}
+          disabled={!pyodideRef.current || isPythonLoading}
           className="px-3 py-2 bg-gray-500 text-white text-sm rounded-lg hover:bg-gray-600 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors mr-2"
         >
           Clear
         </button>
         <button
           onClick={runCode}
-          disabled={isRunning || !pyodide || isPythonLoading}
+          disabled={isRunning || !pyodideRef.current || isPythonLoading}
           className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
         >
           {isRunning ? 'Running...' : 'Run Code'}
@@ -293,7 +278,7 @@ output
           </div>
         </div>
         
-        {/* Output Panel */}
+        {/* Output */}
         <div className="flex flex-col">
           <h4 className="text-sm font-medium text-gray-700 mb-2">Output</h4>
           <div className="flex-1 bg-gray-900 text-green-400 p-4 font-mono text-sm rounded-lg overflow-auto">
